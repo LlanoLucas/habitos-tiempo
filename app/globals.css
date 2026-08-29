@@ -139,3 +139,7 @@ progress { width: 100%; height: .5rem; margin-top: .5rem; accent-color: var(--ac
 main > nav.row { position: static; border: 0; background: none; padding: 0; margin-bottom: 1.25rem; justify-content: flex-start; gap: 1rem; }
 main > nav.row a { color: var(--accent); }
 main > nav.row a[aria-current="page"] { color: var(--fg); font-weight: 600; text-decoration: underline; }
+
+.skeleton { background: var(--line); border-radius: .75rem; margin-bottom: .75rem; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .45 } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none } }

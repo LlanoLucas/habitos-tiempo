@@ -4,9 +4,10 @@ import { formatDay, formatMinutes, shiftDay, todayISO } from '@/lib/time'
 import { isDue } from '@/lib/habits'
 import type { Activity, Habit, Task } from '@/lib/database.types'
 import TaskForm from './task-form'
+import TaskItem from './task-item'
 import TimeLogForm from './time-log-form'
 import TodayGuard from './today-guard'
-import { deleteTask, logHabit, toggleTask } from './actions'
+import HabitCounter from './habit-counter'
 
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/
 
@@ -104,68 +105,14 @@ export default async function PlannerPage({ searchParams }: PageProps<'/'>) {
   )
 }
 
-function TaskItem({ task }: { task: Task }) {
-  return (
-    <li className="row">
-      <form action={toggleTask}>
-        <input type="hidden" name="id" value={task.id} />
-        <input type="hidden" name="done" value={String(task.done)} />
-        <button type="submit" aria-label={task.done ? 'Marcar pendiente' : 'Marcar hecha'}>
-          {task.done ? '✓' : '○'}
-        </button>
-      </form>
-
-      <span className={task.done ? 'done' : undefined}>{task.title}</span>
-
-      <form action={deleteTask}>
-        <input type="hidden" name="id" value={task.id} />
-        <button type="submit" aria-label="Borrar">✕</button>
-      </form>
-    </li>
-  )
-}
-
 function HabitRow({ habit, day, count }: { habit: Habit; day: string; count: number }) {
-  const goal = habit.times_per_day
-
   return (
     <li className="row">
       <div>
         <h3>{habit.name}</h3>
-        <p>
-          {count} de {goal} {count >= goal ? '✓' : ''}
-        </p>
       </div>
-      <div className="row">
-        <Step habitId={habit.id} day={day} next={count - 1} label="−" disabled={count === 0} />
-        <Step habitId={habit.id} day={day} next={count + 1} label="+" />
-      </div>
+      <HabitCounter habitId={habit.id} day={day} count={count} goal={habit.times_per_day} />
     </li>
-  )
-}
-
-function Step({
-  habitId,
-  day,
-  next,
-  label,
-  disabled,
-}: {
-  habitId: string
-  day: string
-  next: number
-  label: string
-  disabled?: boolean
-}) {
-  return (
-    <form action={logHabit}>
-      <input type="hidden" name="habit_id" value={habitId} />
-      <input type="hidden" name="day" value={day} />
-      <input type="hidden" name="next" value={next} />
-      <button type="submit" disabled={disabled} aria-label={label === '+' ? 'Sumar' : 'Restar'}>
-        {label}
-      </button>
-    </form>
   )
 }
 
