@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* Estilo base mínimo, apuntado a elementos y no a clases: el JSX queda limpio y
+   el paso de diseño puede reemplazar este archivo entero sin tocar componentes. */
+
+:root {
+  --bg: #f7f7f8;
+  --card: #ffffff;
+  --fg: #16161a;
+  --muted: #6b7280;
+  --line: #e3e3e7;
+  --accent: #2563eb;
+  --danger: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0b0d;
+    --card: #16161a;
+    --fg: #ededed;
+    --muted: #9aa0a6;
+    --line: #2a2a30;
+    --accent: #7aa2f7;
+    --danger: #f87171;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 6rem; /* el padding de abajo deja lugar al nav fijo */
+}
+
+h1 { font-size: 1.5rem; margin: 0 0 1.25rem; }
+h2 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 .625rem; }
+h3 { font-size: 1.0625rem; margin: 0 0 .125rem; }
+p  { margin: .25rem 0; }
+section { margin-bottom: 1.75rem; }
+
+/* --- tarjetas --- */
+section > ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+section > ul > li,
+section > form,
+main > form {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: .75rem;
+  padding: .9375rem;
+}
+section > ul:not(:has(li)) { display: none; }
+
+/* --- formularios --- */
+label { display: block; margin-bottom: .875rem; font-size: .75rem; color: var(--muted); }
+input:not([type]), input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: .25rem;
+  font: inherit;
+  padding: .625rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+  background: var(--bg);
+  color: var(--fg);
+}
+fieldset { border: 1px solid var(--line); border-radius: .5rem; padding: .5rem .75rem .625rem; margin: 0 0 .875rem; }
+legend { font-size: .75rem; color: var(--muted); padding: 0 .25rem; }
+fieldset label { display: flex; align-items: center; gap: .5rem; margin: .375rem 0; font-size: .9375rem; color: var(--fg); }
+input[type="radio"], input[type="checkbox"] { width: 1.15rem; height: 1.15rem; margin: 0; accent-color: var(--accent); }
+
+button {
+  font: inherit;
+  min-height: 44px; /* mínimo táctil */
+  padding: 0 1rem;
+  border: 1px solid var(--accent);
+  border-radius: .5rem;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; cursor: default; }
+button[value="signup"], details button { background: transparent; color: var(--accent); }
+li > form { border: 0; padding: 0; background: none; margin-top: .5rem; }
+li > form button { min-height: 36px; padding: 0 .625rem; font-size: .8125rem; background: none; border-color: var(--line); color: var(--danger); }
+
+/* --- proyecciones: dt arriba, dd abajo, una columna por período --- */
+dl { display: grid; grid-auto-flow: column; grid-template-rows: auto auto; gap: .125rem .75rem; margin: .625rem 0 0; }
+dt { font-size: .6875rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+details { margin-top: .625rem; }
+summary { cursor: pointer; font-size: .8125rem; color: var(--accent); }
+details form { padding-top: .75rem; }
+
+[role="alert"] { color: var(--danger); font-size: .875rem; }
+
+/* --- nav fijo abajo, que es donde llega el pulgar --- */
+nav {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: .25rem;
+  padding: .375rem .5rem calc(.375rem + env(safe-area-inset-bottom));
+  background: var(--card);
+  border-top: 1px solid var(--line);
+}
+nav a { color: var(--fg); text-decoration: none; font-size: .8125rem; padding: .625rem .5rem; }
+nav form { display: contents; }
+nav button { min-height: 36px; padding: 0 .5rem; font-size: .8125rem; background: none; border: 0; color: var(--muted); }
+
+/* --- filas de dos lados (tarea, hábito, actividad) --- */
+.row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.row > form { margin: 0; border: 0; padding: 0; background: none; }
+.row span { flex: 1; }
+.row input[type="number"], .row input[type="date"] { width: 6rem; margin-top: 0; }
+li.row > form button, .row > form button {
+  min-width: 44px; min-height: 40px; padding: 0 .5rem;
+  background: none; border: 1px solid var(--line); color: var(--fg);
+}
+.done { text-decoration: line-through; color: var(--muted); }
+
+.day-nav { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .75rem; }
+.day-nav h1 { margin: 0; font-size: 1.25rem; }
+.day-nav a { color: var(--accent); text-decoration: none; font-size: .875rem; }
+main > form.row { margin-bottom: 1.5rem; justify-content: flex-start; }
+
+progress { width: 100%; height: .5rem; margin-top: .5rem; accent-color: var(--accent); }
+main > nav.row { position: static; border: 0; background: none; padding: 0; margin-bottom: 1.25rem; justify-content: flex-start; gap: 1rem; }
+main > nav.row a { color: var(--accent); }
+main > nav.row a[aria-current="page"] { color: var(--fg); font-weight: 600; text-decoration: underline; }
